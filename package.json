@@ -1,0 +1,44 @@
+{
+  "name": "mcpcm",
+  "version": "0.1.0",
+  "description": "A cross-platform CLI tool to manage Model Context Protocol (MCP) servers across different coding agents",
+  "main": "dist/index.js",
+  "bin": {
+    "mcpcm": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "cli",
+    "configuration",
+    "claude-code",
+    "cursor",
+    "windsurf"
+  ],
+  "author": "Nishim12",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^12.0.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.9",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.0",
+    "jest": "^29.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
