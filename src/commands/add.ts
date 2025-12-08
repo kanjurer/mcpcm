@@ -35,6 +35,7 @@ export async function addCommand(serverName: string, options: { agent?: string }
   const server: MCPServer = {
     command: answers.command.trim(),
     args: answers.args.trim() ? answers.args.trim().split(/\s+/) : [],
+    enabled: true,
   };
   
   if (answers.env.trim()) {

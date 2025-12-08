@@ -35,7 +35,10 @@ export async function listCommand(options: { agent?: string }) {
         console.log(chalk.green(`  ` + serverNames.length + ` server(s) configured:`));
         serverNames.forEach(name => {
           const server = servers[name];
-          console.log(chalk.white(`    - ` + name));
+          const isEnabled = server.enabled ?? true;
+          const icon = isEnabled ? chalk.green('✓') : chalk.red('✗');
+          const status = isEnabled ? chalk.gray('(enabled)') : chalk.gray('(disabled)');
+          console.log(chalk.white(`    ` + icon + ` ` + name + ` ` + status));
           console.log(chalk.gray(`      command: ` + server.command));
           if (server.args && server.args.length > 0) {
             console.log(chalk.gray(`      args: ` + server.args.join(' ')));

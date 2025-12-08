@@ -6,6 +6,10 @@ import { listCommand } from './commands/list.js';
 import { addCommand } from './commands/add.js';
 import { removeCommand } from './commands/remove.js';
 import { validateCommand } from './commands/validate.js';
+import { enableCommand } from './commands/enable.js';
+import { disableCommand } from './commands/disable.js';
+import { toggleCommand } from './commands/toggle.js';
+import { statusCommand } from './commands/status.js';
 
 const program = new Command();
 
@@ -42,5 +46,29 @@ program
   .description('Validate all MCP configurations')
   .option('-a, --agent <agent>', 'Target specific agent')
   .action(validateCommand);
+
+program
+  .command('enable <server-name>')
+  .description('Enable an MCP server')
+  .option('-a, --agent <agent>', 'Target specific agent')
+  .action(enableCommand);
+
+program
+  .command('disable <server-name>')
+  .description('Disable an MCP server')
+  .option('-a, --agent <agent>', 'Target specific agent')
+  .action(disableCommand);
+
+program
+  .command('toggle <server-name>')
+  .description('Toggle an MCP server on/off')
+  .option('-a, --agent <agent>', 'Target specific agent')
+  .action(toggleCommand);
+
+program
+  .command('status')
+  .description('Show enabled/disabled status of all servers')
+  .option('-a, --agent <agent>', 'Target specific agent')
+  .action(statusCommand);
 
 program.parse();

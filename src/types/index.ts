@@ -3,6 +3,7 @@ export interface MCPServer {
   args?: string[];
   env?: Record<string, string>;
   timeout?: number;
+  enabled?: boolean;
 }
 
 export interface MCPConfig {

@@ -76,32 +76,83 @@ export class ConfigParser {
     return config.mcpServers;
   }
 
+  async enableServer(configPath: string, serverName: string): Promise<void> {
+    const config = await this.read(configPath);
+
+    if (!config.mcpServers[serverName]) {
+      throw new Error(`Server "${serverName}" not found in config`);
+    }
+
+    config.mcpServers[serverName].enabled = true;
+    await this.write(configPath, config);
+  }
+
+  async disableServer(configPath: string, serverName: string): Promise<void> {
+    const config = await this.read(configPath);
+
+    if (!config.mcpServers[serverName]) {
+      throw new Error(`Server "${serverName}" not found in config`);
+    }
+
+    config.mcpServers[serverName].enabled = false;
+    await this.write(configPath, config);
+  }
+
+  async toggleServer(configPath: string, serverName: string): Promise<boolean> {
+    const config = await this.read(configPath);
+
+    if (!config.mcpServers[serverName]) {
+      throw new Error(`Server "${serverName}" not found in config`);
+    }
+
+    const currentState = config.mcpServers[serverName].enabled ?? true;
+    const newState = !currentState;
+    config.mcpServers[serverName].enabled = newState;
+    await this.write(configPath, config);
+
+    return newState;
+  }
+
+  async getServerStatus(configPath: string, serverName: string): Promise<boolean> {
+    const config = await this.read(configPath);
+
+    if (!config.mcpServers[serverName]) {
+      throw new Error(`Server "${serverName}" not found in config`);
+    }
+
+    return config.mcpServers[serverName].enabled ?? true;
+  }
+
   validate(config: MCPConfig): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     if (!config.mcpServers || typeof config.mcpServers !== 'object') {
       errors.push('Config must have an "mcpServers" object');
       return { valid: false, errors };
     }
-    
+
     for (const [name, server] of Object.entries(config.mcpServers)) {
       if (!server.command || typeof server.command !== 'string') {
         errors.push(`Server "${name}" must have a "command" string`);
       }
-      
+
       if (server.args && !Array.isArray(server.args)) {
         errors.push(`Server "${name}" args must be an array`);
       }
-      
+
       if (server.env && typeof server.env !== 'object') {
         errors.push(`Server "${name}" env must be an object`);
       }
-      
+
       if (server.timeout && typeof server.timeout !== 'number') {
         errors.push(`Server "${name}" timeout must be a number`);
       }
+
+      if (server.enabled !== undefined && typeof server.enabled !== 'boolean') {
+        errors.push(`Server "${name}" enabled must be a boolean`);
+      }
     }
-    
+
     return { valid: errors.length === 0, errors };
   }
 }
